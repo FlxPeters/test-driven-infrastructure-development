@@ -2,8 +2,6 @@ baseURL = "http://example.org/"
 languageCode = "en-us"
 title = "Test driven infrastructure development"
 
-publishDir = "docs"
-
 theme = "reveal-hugo"
 
 [markup.goldmark.renderer]

@@ -1,0 +1,15 @@
+---
+- name: Provision a AWS AMI with docker and a demo app
+  hosts: default
+  become: true
+  pre_tasks:
+    - name: Only run "update_cache=yes" if the last one is more than 3600 seconds ago
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+    - name: Install Pip
+      apt:
+        name: python3-pip
+  roles:
+    - role-docker
+    - role-app

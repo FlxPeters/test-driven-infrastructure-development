@@ -1,0 +1,20 @@
+---
+driver:
+  name: terraform
+  variable_files:
+    - testing.tfvars
+
+provisioner:
+  name: terraform
+
+platforms:
+  - name: aws
+
+verifier:
+  name: terraform
+  systems:
+    - name: Verify AWS resources
+      backend: aws
+
+suites:
+  - name: aws

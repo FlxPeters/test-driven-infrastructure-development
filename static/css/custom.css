@@ -1,0 +1,49 @@
+.blured.light .slide-background-content {
+  -webkit-filter: blur(4px) saturate(0.5) brightness(0.8);
+  -moz-filter: blur(4px) saturate(0.7) brightness(0.9);
+  -o-filter: blur(4px) saturate(0.7) brightness(0.9);
+  -ms-filter: blur(4px) saturate(0.7) brightness(0.9);
+  filter: blur(4px) saturate(0.7) brightness(0.9);
+  opacity: 0.5;
+}
+
+.blured .slide-background-content {
+  -webkit-filter: blur(4px) saturate(0.5) brightness(0.8);
+  -moz-filter: blur(4px) saturate(0.7) brightness(0.9);
+  -o-filter: blur(4px) saturate(0.7) brightness(0.9);
+  -ms-filter: blur(4px) saturate(0.7) brightness(0.9);
+  filter: blur(4px) saturate(0.7) brightness(0.9);
+  opacity: 0.1;
+}
+
+ol li,
+ul li {
+  margin-bottom: 2rem;
+}
+
+.reveal section img {
+  background: transparent;
+  border: 0px;
+  box-shadow: none;
+}
+
+.badge {
+  background: #880000;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 1.5rem;
+}
+
+.badge a {
+  color: #fff;
+}
+
+figure.float {
+  position: absolute;
+  top: 10px;
+  left: 0;
+}
+
+.reveal pre {
+  font-size: 0.4em;
+}

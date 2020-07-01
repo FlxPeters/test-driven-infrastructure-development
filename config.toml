@@ -1,6 +1,8 @@
 baseURL = "http://example.org/"
 languageCode = "en-us"
-title = "test driven infrastructure"
+title = "Test driven infrastructure development"
+
+publishDir = "docs"
 
 theme = "reveal-hugo"
 

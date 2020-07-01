@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://example.org/home/intro/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.org/home/docker_image_testing/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.org/home/ansible_role_testing/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.org/home/terraform_module/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.org/home/outro/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.org/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.org/home/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.org/tags/</loc>
+  </url>
+  
+  <url>
+    <loc>http://example.org/</loc>
+  </url>
+  
+</urlset>

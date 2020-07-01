@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+  <head>
+	<meta name="generator" content="Hugo 0.68.3" />
+    <meta charset="utf-8">
+<title>tdd-infrastructure</title>
+<meta name="description" content="Test driven infrastructure development">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="/reveal-js/css/reset.css">
+<link rel="stylesheet" href="/reveal-js/css/reveal.css"><link rel="stylesheet" href="/reveal-js/css/theme/blood.css" id="theme">
+<link rel="stylesheet" href="/highlight-js/default.min.css"><link rel="stylesheet" href="/css/custom.css" id="custom_css">
+    
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+  
+
+    <section><h2 id="test-driven-infrastructure-development">Test driven infrastructure development</h2>
+</section><section>
+<pre><code>$ whoami
+Felix Peters
+
+$ groups
+devops operations-core-tooling
+</code></pre>
+</section>
+
+  
+
+    <section>
+
+<section data-shortcode-section>
+<h2 id="infrastructure-bras-brcode">Infrastructure <br>as <br>Code</h2>
+</section>
+<section data-noprocess data-shortcode-slide
+      data-background-image="https://images.unsplash.com/photo-1582854050148-651d87fa3319?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1350&amp;q=80">
+<h2 id="expectation">Expectation</h2>
+</section>
+<section data-noprocess data-shortcode-slide
+      data-background-image="https://images.pexels.com/photos/861464/pexels-photo-861464.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260">
+<h2 id="reality">Reality</h2>
+</section><section>
+<p>Testing is the way to success</p>
+<blockquote>
+<p>Code without tests is broken by design.</p>
+</blockquote>
+<p><small><a href="https://jacobian.org/">Jacob</a></small></p>
+</section>
+<section data-noprocess data-shortcode-slide
+      data-background-color="#fff"
+      data-background-image="/diagram/clustered_web_services_example.png">
+</section>
+<section data-noprocess data-shortcode-slide
+      data-background-image="/diagram/clustered_web_services_example.png"
+      class="blured">
+<h2 id="how-do-we-build-this-test-driven">How do we build this test driven?</h2>
+</section>
+<section data-noprocess data-shortcode-slide
+      data-background-image="https://images.unsplash.com/photo-1505461397380-71e1c7570998?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1567&amp;q=80"
+      class="blured light">
+<h3 id="divide-and-conquer">Divide and conquer</h3>
+<ul>
+<li>Split the project in testable unit</li>
+<li>Test each unit in isolation</li>
+<li>Integrate units and test them together</li>
+</ul>
+</section>
+<section data-noprocess data-shortcode-slide
+      data-background-color="#fff"
+      data-background-image="/diagram/value_stream.png">
+</section>
+<section data-noprocess data-shortcode-slide
+      data-background-image="/diagram/value_stream.png"
+      class="blured">
+<ul>
+<li><strong>Dockerized Python App</strong><br>Package App as Docker image</li>
+<li><strong>Ansible role Docker</strong><br>Install Docker with Ansible</li>
+<li><strong>Ansible role Application</strong><br>Setup App with Docker</li>
+</ul>
+</section>
+<section data-noprocess data-shortcode-slide
+      data-background-image="/diagram/value_stream.png"
+      class="blured">
+<ul>
+<li><strong>Packer</strong><br>Package App and Docker to an AMI with Packer</li>
+<li><strong>Terraform Module</strong><br>Setup ELB, Autoscaling Group and EC2 instances</li>
+<li><strong>Terraform Deployment</strong><br>Deploy terraform Module to a AWS region</li>
+</ul>
+<aside class="notes"><ul>
+<li>Create a value stream</li>
+<li>This example could be easier with services like ECS. The purpose here is to demonstrate several tools from containers, to VMs and orchestration with terraform.</li>
+</ul>
+</aside>
+</section><section>
+<figure>
+    <img src="/img/test_pyramid.png"/> <figcaption>
+            <h4>IaC test pyramid</h4>
+        </figcaption>
+</figure>
+<aside class="notes"><ul>
+<li>There is no good talk about testing without a pyramid!</li>
+<li>Can be used for splitting up the project into smaller junks</li>
+</ul>
+</aside>
+
+</section>
+</section>
+    
+
+<section data-shortcode-section>
+<section data-noprocess data-shortcode-slide
+      data-background-image="https://images.unsplash.com/photo-1505460913785-79883ec8cf5a?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=967&amp;q=80"
+      class="blured light">
+<h2 id="part-01">Part 01</h2>
+<p>Build and test a Docker image</p>
+</section><section>
+<p>Dockerfile</p>
+<pre><code>    FROM python:alpine3.11
+
+    RUN adduser --disabled-password --gecos '' -u 1001 app
+    USER app
+    WORKDIR /home/app
+
+    COPY --chown=app:app app.py app.py
+
+    EXPOSE 8000
+
+    CMD [ &quot;python3&quot;, &quot;app.py&quot; ]
+</code></pre>
+</section><section>
+<h3 id="container-structure-tests">Container Structure Tests</h3>
+<p><span class="badge">Static analysis</span> <span class="badge"><a href="https://github.com/GoogleContainerTools/container-structure-test">Github</a></span></p>
+<p>Validate the structure of a container image</p>
+<pre><code>schemaVersion: 2.0.0
+
+fileExistenceTests:
+- name: &quot;app.py&quot;
+    path: &quot;/home/app/app.py&quot;
+    shouldExist: true
+    uid: 1001
+
+metadataTest:
+exposedPorts: [&quot;8000&quot;]
+cmd: [&quot;python3&quot;, &quot;app.py&quot;]
+workdir: &quot;/home/app&quot;
+</code></pre>
+</section><section>
+<h3 id="hadolint">Hadolint</h3>
+<figure class="float">
+    <img src="https://camo.githubusercontent.com/ed1547b1b7f6060ad464d180a0c28975ba876830/68747470733a2f2f6861646f6c696e742e6769746875622e696f2f6861646f6c696e742f696d672f6361745f636f6e7461696e65722e706e67" height="120px"/> 
+</figure>
+<p><span class="badge">Linter</span> <span class="badge">Static analysis</span> <span class="badge"><a href="https://github.com/hadolint/hadolint">Github</a></span></p>
+<p>A smarter Dockerfile linter that helps you build best practice Docker images</p>
+</section><section>
+<h3 id="curl--bash">Curl &amp; Bash</h3>
+<p><span class="badge">Unit test</span></p>
+<pre><code>docker run --rm --name tdd-example-test -d -p 8000:8000 tdd-example:latest
+
+attempt_counter=0
+max_attempts=5
+until $(curl --output /dev/null --silent --fail http://localhost:8000); do
+    if [ ${attempt_counter} -eq ${max_attempts} ];then
+    echo &quot;Max attempts reached&quot;
+    exit 1
+    fi
+    echo '.'
+    attempt_counter=$(($attempt_counter+1))
+    sleep 5
+done
+
+docker stop tdd-example-test
+</code></pre>
+
+</section>
+</section>
+    
+
+<section data-shortcode-section>
+<section data-noprocess data-shortcode-slide
+      data-background-image="https://images.unsplash.com/photo-1583870996823-27533e7cc4e2?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=634&amp;q=80"
+      class="blured light">
+<h2 id="part-02">Part 02</h2>
+<p>Testing Ansible roles</p>
+</section><section>
+<h3 id="molecule">Molecule</h3>
+<figure class="float">
+    <img src="https://molecule.readthedocs.io/en/latest/_static/images/logo_invert.png" height="120px"/> 
+</figure>
+<p><span class="badge">Test Framework</span>
+<span class="badge"><a href="https://github.com/ansible-community/molecule">Github</a></span>
+<span class="badge"><a href="https://molecule.readthedocs.io/en/latest/">Docs</a></span></p>
+<p>Modular framework for testing Ansible roles in many scenarios and distributions</p>
+<p><strong>Drivers:</strong> <br>Ansible, Docker, Podman, Vagrant, Cloud providers</p>
+<p><strong>Verifiers:</strong> <br>Ansible-Lint, yamllint, Ansible, Inspec, Testinfra, Goss</p>
+</section><section>
+<h3 id="workflow">Workflow</h3>
+<ol>
+<li>Install dependencies via Ansible Galaxy</li>
+<li>Lint the Ansible role code</li>
+<li><strong>Prepare</strong>: Start one ore more test instances using a driver and apply prepare steps</li>
+<li><strong>Converge</strong>: Apply the role via an Ansible playbook</li>
+<li>Run the playbook again to ensure idempotence</li>
+<li><strong>Verify</strong>: Run one or more verifiers</li>
+<li>Cleanup</li>
+</ol>
+</section><section>
+<h3 id="ansible-lint">Ansible Lint</h3>
+<p><span class="badge">Linter</span>
+<span class="badge"><a href="https://github.com/ansible/ansible-lint">Github</a></span></p>
+<p>Checks playbooks for practices and behaviour that could potentially be improved.</p>
+<pre><code>$ ansible-lint geerlingguy.apache
+
+[502] All tasks should be named
+/Users/chouseknecht/.ansible/roles/geerlingguy.apache/tasks/main.yml:29
+Task/Handler: include_vars apache-22.yml
+</code></pre>
+</section><section>
+<h3 id="yamllint">yamllint</h3>
+<p><span class="badge">Linter</span>
+<span class="badge"><a href="https://github.com/adrienverge/yamllint">Github</a></span>
+<span class="badge"><a href="https://github.com/geerlingguy/ansible-role-docker/blob/master/.yamllint">Example</a></span></p>
+<p>A linter for YAML files. <br> Enforce best practices and formats for yaml files.</p>
+<figure>
+    <img src="https://raw.githubusercontent.com/adrienverge/yamllint/master/docs/screenshot.png"/> 
+</figure>
+</section><section>
+<h3 id="ansible-as-verifier">Ansible as verifier</h3>
+<p><span class="badge">Unit test</span>
+<span class="badge">Integration test</span>
+<span class="badge"><a href="https://github.com/aelsabbahy/goss">Github</a></span></p>
+<p>Use ansible facts and modules and assert as test driver.</p>
+<pre><code>- name: Populate service facts
+  service_facts:
+
+- name: Assert services are running
+  assert:
+    that:
+      - ansible_facts.services['docker.service'].state == 'running'
+
+- name: Check Cadvisor web is available
+  uri: url=&quot;http://localhost:8089/containers/&quot; status_code=[200]
+  register: result
+  until: result.status == 200
+  retries: 60
+  delay: 1
+</code></pre>
+</section><section>
+<h3 id="testinfra">Testinfra</h3>
+<figure class="float">
+    <img src="https://testinfra.readthedocs.io/en/latest/_static/logo.svg" height="120px"/> 
+</figure>
+<p><span class="badge">Unit test</span>
+<span class="badge"><a href="https://github.com/philpep/testinfra">Github</a></span>
+<span class="badge"><a href="https://testinfra.readthedocs.io/en/latest/">Docs</a></span></p>
+<p>With Testinfra you can write unit tests in <strong>Python</strong> to <strong>test actual state of your servers</strong>.</p>
+<pre><code>def test_nginx_is_installed(host):
+    nginx = host.package(&quot;nginx&quot;)
+    assert nginx.is_installed
+    assert nginx.version.startswith(&quot;1.2&quot;)
+
+def test_nginx_running_and_enabled(host):
+    nginx = host.service(&quot;nginx&quot;)
+    assert nginx.is_running
+    assert nginx.is_enabled
+</code></pre>
+<p>Make use of the well known pytest framework. Inspired by Serverspec.</p>
+</section><section>
+<h3 id="goss">Goss</h3>
+<p><span class="badge">Unit test</span>
+<span class="badge"><a href="https://github.com/aelsabbahy/goss">Github</a></span></p>
+<p>Goss is a simple YAML based tool for validating a server’s configuration. Allows generating tests from current system status. No coding required.</p>
+<pre><code>$ cat goss.yaml
+port:
+    tcp:22:
+        listening: true
+        ip:
+        - 0.0.0.0
+service:
+    sshd:
+        enabled: true
+        running: true
+</code></pre>
+<p>Can also be used for verifying docker images!</p>
+</section><section>
+<h3 id="chef-inspec">Chef Inspec</h3>
+<figure class="float">
+    <img src="https://avatars3.githubusercontent.com/u/39202509?s=200&amp;v=4" height="120px"/> 
+</figure>
+<p><span class="badge">Unit test</span>
+<span class="badge">Integration test</span>
+<span class="badge"><a href="https://github.com/inspec/inspec">Github</a></span>
+<span class="badge"><a href="https://www.inspec.io/">Docs</a></span></p>
+<p>Chef InSpec is an testing framework for infrastructure with a human- and machine-readable DSL.</p>
+<pre><code>describe port(80) do
+    it { should_not be_listening }
+end
+
+describe port(443) do
+    it { should be_listening }
+    its('protocols') {should include 'tcp'}
+end
+</code></pre>
+<p>Provides a wide range of controls for servers and cloud providers like AWS or Azure.</p>
+</section><section>
+<h3 id="molecule-conclusion">Molecule conclusion</h3>
+<ul>
+<li>Testing Ansible roles is a solved problem</li>
+<li>Use molecule as Ansible&rsquo;s native testing framework</li>
+<li>Use one ore more linter</li>
+<li>Use the verifier you like best</li>
+<li>Testing in docker is fast but can be complicated</li>
+</ul>
+
+</section>
+</section>
+    
+
+<section data-shortcode-section>
+<section data-noprocess data-shortcode-slide
+      data-background-image="https://images.unsplash.com/photo-1547110543-a2af5c37f597?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2700&amp;q=80"
+      class="blured light">
+<h2 id="part-03">Part 03</h2>
+<p>Create and test a Terraform module</p>
+</section><section>
+<p>Terraform module structure</p>
+</section><section>
+<p>Kitchen CI</p>
+</section><section>
+<p>Terraform Kitchen</p>
+</section><section>
+<p>Terratest</p>
+<p><a href="https://github.com/gruntwork-io/terratest">https://github.com/gruntwork-io/terratest</a></p>
+<p>Terratest uses the Go testing framework. To use Terratest, you need to install:</p>
+</section><section>
+<p>OPA</p>
+<p><a href="https://www.openpolicyagent.org/docs/latest/terraform/">https://www.openpolicyagent.org/docs/latest/terraform/</a></p>
+
+</section>
+</section>
+    <section><h2 id="conclution">Conclution</h2>
+<blockquote>
+<p>&ldquo;Testing infrastructure is hard&rdquo;</p>
+</blockquote>
+<ul>
+<li>
+<p>Split code into testable units</p>
+</li>
+<li>
+<p>Only test the scope of a unit</p>
+</li>
+<li>
+<p>Use proper tools for each kind of test</p>
+</li>
+<li>
+<p>Start small with simple defaults tests</p>
+</li>
+<li>
+<p>Write a test for each bugfix</p>
+</li>
+</ul>
+</section><section>
+<p>Questions?</p>
+</section><section>
+<h2 id="credits">Credits</h2>
+<p><strong>Formula One Team</strong>: <a href="https://www.formula1.com/content/dam/fom-website/ooyala-videos/2019/7/gyYzY2aTE6olzALb6DBiz4WDQ63YUJmz">https://www.formula1.com/content/dam/fom-website/ooyala-videos/2019/7/gyYzY2aTE6olzALb6DBiz4WDQ63YUJmz</a></p>
+<p><strong>Stock Car</strong>: Rainer Willenbrock - CC licence at fotocommunity.de</p>
+<p><a href="https://blog.codecentric.de/en/2018/12/test-driven-infrastructure-ansible-molecule/">https://blog.codecentric.de/en/2018/12/test-driven-infrastructure-ansible-molecule/</a></p>
+</section>
+
+</div>
+      
+
+    </div>
+<script type="text/javascript" src=/reveal-hugo/object-assign.js></script>
+
+<a href="/reveal-js/css/print/" id="print-location" style="display: none;"></a>
+<script type="text/javascript">
+  var printLocationElement = document.getElementById('print-location');
+  var link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  link.href = printLocationElement.href + (window.location.search.match(/print-pdf/gi) ? 'pdf.css' : 'paper.css');
+  document.getElementsByTagName('head')[0].appendChild(link);
+</script>
+
+<script type="application/json" id="reveal-hugo-site-params">{"custom_css":"css/custom.css","theme":"blood"}</script>
+<script type="application/json" id="reveal-hugo-page-params">null</script>
+
+<script src="/reveal-js/js/reveal.js"></script>
+
+<script type="text/javascript">
+  
+  
+  function camelize(map) {
+    if (map) {
+      Object.keys(map).forEach(function(k) {
+        newK = k.replace(/(\_\w)/g, function(m) { return m[1].toUpperCase() });
+        if (newK != k) {
+          map[newK] = map[k];
+          delete map[k];
+        }
+      });
+    }
+    return map;
+  }
+  
+  var revealHugoDefaults = { center: true, controls: true, history: true, progress: true, transition: "slide" };
+  var revealHugoSiteParams = JSON.parse(document.getElementById('reveal-hugo-site-params').innerHTML);
+  var revealHugoPageParams = JSON.parse(document.getElementById('reveal-hugo-page-params').innerHTML);
+  
+  var options = Object.assign({},
+    camelize(revealHugoDefaults),
+    camelize(revealHugoSiteParams),
+    camelize(revealHugoPageParams));
+  Reveal.initialize(options);
+</script>
+
+
+  
+  
+  <script type="text/javascript" src="/reveal-js/plugin/markdown/marked.js"></script>
+  
+  <script type="text/javascript" src="/reveal-js/plugin/markdown/markdown.js"></script>
+  
+  <script type="text/javascript" src="/reveal-js/plugin/highlight/highlight.js"></script>
+  
+  <script type="text/javascript" src="/reveal-js/plugin/zoom-js/zoom.js"></script>
+  
+  
+  <script type="text/javascript" src="/reveal-js/plugin/notes/notes.js"></script>
+
+
+
+    
+    
+  </body>
+</html>

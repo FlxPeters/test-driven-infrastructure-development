@@ -1,0 +1,27 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+  pre_tasks:
+    - name: Only run "update_cache=yes" if the last one is more than 3600 seconds ago
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+        
+  roles:
+    - role-docker
+
+  post_tasks:
+    - name: create /etc/docker
+      file:
+        state: directory
+        path: /etc/docker
+
+    - name: set storage-driver to vfs via daemon.json
+      copy:
+        content: |
+          {
+            "storage-driver": "vfs"
+          }
+        dest: /etc/docker/daemon.json
+      notify: restart docker

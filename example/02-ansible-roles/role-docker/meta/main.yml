@@ -1,0 +1,10 @@
+galaxy_info:
+  author: Felix Peters
+  description: Deploy Docker to a Ubuntu host
+  min_ansible_version: 2.9
+  license: MIT
+  platforms:
+  - name: Ubuntu
+    versions:
+    - 20.04
+dependencies: []

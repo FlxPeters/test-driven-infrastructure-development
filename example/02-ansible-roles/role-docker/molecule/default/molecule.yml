@@ -1,0 +1,27 @@
+---
+# Use docker as driver
+driver:
+  name: docker
+
+# lint with ansible-lint and yamllint
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+platforms:
+
+  # start a ubuntu-20.04 instance with systemd enabled
+  - name: instance
+    image: "geerlingguy/docker-ubuntu2004-ansible:latest"
+    command: ""
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+
+# Use testinfra for verification
+verifier:
+  name: testinfra
+
+provisioner:
+  name: ansible

@@ -1,0 +1,12 @@
+schemaVersion: 2.0.0
+
+fileExistenceTests:
+  - name: "app.py"
+    path: "/home/app/app.py"
+    shouldExist: true
+    uid: 1001
+
+metadataTest:
+  exposedPorts: ["8000"]
+  cmd: ["python3", "app.py"]
+  workdir: "/home/app"

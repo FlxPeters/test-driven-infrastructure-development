@@ -1,0 +1,23 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  tasks:
+    - name: "Include role-docker"
+      include_role:
+        name: "role-docker"
+
+  post_tasks:
+    - name: create /etc/docker
+      file:
+        state: directory
+        path: /etc/docker
+
+    - name: set storage-driver to vfs via daemon.json
+      copy:
+        content: |
+          {
+            "storage-driver": "vfs"
+          }
+        dest: /etc/docker/daemon.json
+      notify: restart docker

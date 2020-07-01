@@ -1,0 +1,19 @@
+---
+- name: Ensure docker bindings are available
+  pip:
+    name: docker
+
+- name: Pull the app image
+  docker_image:
+    name: flxpeters/tdd-infra-example:latest
+    source: pull
+
+- name: Ensure app is running as container
+  docker_container:
+    name: app
+    image: flxpeters/tdd-infra-example:latest
+    state: started
+    restart: yes
+    restart_policy: unless-stopped
+    ports:
+     - "8000:8000"

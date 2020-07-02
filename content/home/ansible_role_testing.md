@@ -6,7 +6,7 @@ weight = 40
 
 {{< slide class="blured light" background-image="https://images.unsplash.com/photo-1583870996823-27533e7cc4e2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"  >}}
 
-## Part 02
+## Part 1.2
 
 Testing Ansible roles
 

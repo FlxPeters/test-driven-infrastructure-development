@@ -9,8 +9,12 @@ outputs = ["Reveal"]
 
 ---
 
-    $ whoami
-    Felix Peters
+Your race director for the next hour
 
-    $ groups
-    devops operations-core-tooling
+### Felix Peters
+
+Breuninger<br>**Operations Core Tooling**
+
+DevOps & Operations Engineer
+
+<small>[Github](https://github.com/FlxPeters) &middot; [flxpeters.de](https://www.flxpeters.de/)</small>

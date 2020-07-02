@@ -79,4 +79,12 @@ A smarter Dockerfile linter that helps you build best practice Docker images
 
     docker stop tdd-example-test
 
+---
+
+### Conclusion
+
+- Testing Docker images is possible, but rarely done
+- Enforce best practice by using a linter
+- Uses familiar tools to verify the behavior of images
+
 {{% /section %}}

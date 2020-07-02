@@ -1,0 +1,34 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Install netstat
+      apt:
+        name: net-tools
+
+    - name: Get infos on app container
+      docker_container_info:
+        name: "app"
+      register: assert_app
+
+    - debug: 
+        var: assert_app
+
+    - name: Assert app container facts
+      assert: 
+        that:
+          - assert_app.exists
+          - "assert_app.container.Config.Image == 'flxpeters/tdd-infra-example:latest'"
+          - "assert_app.container.State.Status == 'running'"   
+          - "assert_app.container.HostConfig.RestartPolicy.Name == 'unless-stopped'"    
+
+    - name: Gather facts on listening ports
+      listen_ports_facts:
+    
+    - name: Assert Docker ports are closed
+      assert:
+        that:
+          - "{{ item }} in {{ ansible_facts.tcp_listen  | map(attribute='port') | sort | list }}"
+      loop:
+        - 8000

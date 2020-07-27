@@ -1,7 +1,7 @@
 {
   "variables": {
-    "aws_access_key": "",
-    "aws_secret_key": ""
+    "aws_access_key": "AKIAXWO73PYK5OEV7CO5",
+    "aws_secret_key": "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"
   },
   "builders": [
     {
@@ -20,7 +20,7 @@
       },
       "instance_type": "t2.micro",
       "ssh_username": "ubuntu",
-      "ami_name": "packer-tdd-infra-example {{timestamp}}"
+      "ami_name": "packer-tdd-infra-example-latest"
     }
   ],
   "provisioners": [

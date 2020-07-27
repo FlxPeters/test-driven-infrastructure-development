@@ -9,40 +9,40 @@ data "aws_subnet" "public" {
     id = var.subnet_id
 }
 
-# Create Security group
-resource "aws_security_group" "public_http" {
-  
-  name        = "public-http"
-  description = "Allow HTTP inbound traffic"
-  
-  vpc_id = "${data.aws_subnet.public.vpc_id}"
+data "aws_ami" "demo" {
+  most_recent = true
+  filter {
+    name   = "name"
+    values = ["packer-tdd-infra-example-latest"]
+  }
+  owners           = ["self"]
+}
+
+resource "aws_security_group" "allow_http_8000" {
+  name        = "allow_http_8000"
+  description = "Allow HTTP on 8000 inbound traffic"
 
   ingress {
-    cidr_blocks = ["${data.aws_subnet.public.cidr_block}"]
-    from_port   = 80
-    to_port     = 80
+    description = "HTTP on 8000 from everywhere"
+    from_port   = 8000
+    to_port     = 8000
     protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_http_8000"
   }
 }
 
-# Creaste ALB
-# resource "aws_lb" "this" {
-#   name               = "tdd-infra-example-lb"
-#   internal           = false
-#   load_balancer_type = "application"
-#   security_groups    = ["${aws_security_group.lb_sg.id}"]
-#   subnets            = ["${aws_subnet.public.*.id}"]
+resource "aws_instance" "demo" {
+  ami           = data.aws_ami.demo.id
+  instance_type = "t2.micro"
 
-#   enable_deletion_protection = true
+  security_groups = [aws_security_group.allow_http_8000.name]
 
-#   access_logs {
-#     bucket  = "${aws_s3_bucket.lb_logs.bucket}"
-#     prefix  = "test-lb"
-#     enabled = true
-#   }
+  tags = {
+    Name = "tdd-infrastructure-app"
+  }
 
-#   tags = {
-#     Environment = "production"
-#   }
-# }
-
+}

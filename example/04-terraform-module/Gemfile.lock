@@ -388,6 +388,8 @@ GEM
     rspec-mocks (3.9.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
+    rspec-retry (0.6.2)
+      rspec-core (> 3.3)
     rspec-support (3.9.3)
     rubyntlm (0.6.2)
     rubyzip (1.3.0)
@@ -555,6 +557,7 @@ PLATFORMS
 DEPENDENCIES
   inspec-bin!
   kitchen-terraform!
+  rspec-retry!
 
 BUNDLED WITH
    2.1.4

@@ -1,4 +1,4 @@
-FROM python:alpine3.11
+FROM python
 
 RUN adduser --disabled-password --gecos '' -u 1001 app
 USER app

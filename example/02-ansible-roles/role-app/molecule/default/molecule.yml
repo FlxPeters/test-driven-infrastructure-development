@@ -16,5 +16,5 @@ platforms:
 provisioner:
   name: ansible
 verifier:
-  name: testinfra
-#  name: ansible
+#  name: testinfra
+  name: ansible

@@ -27,6 +27,11 @@
     {
       "type": "ansible",
       "playbook_file": "./playbook.yml"
+    },
+    {
+      "type": "inspec",
+      "profile": "./inspec",
+      "inspec_env_vars": ["CHEF_LICENSE=accept"]
     }
   ]
 }

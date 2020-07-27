@@ -1,0 +1,8 @@
+name: tdd-infrastructure
+title: tdd-infrastructure
+maintainer: Felix Peters
+license: None
+summary: InSpec controls for tdd-infrastructure
+version: 0.0.1
+supports:
+  - os-family: linux

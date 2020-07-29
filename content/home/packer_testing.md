@@ -39,6 +39,8 @@ Chef InSpec is an open source automated testing tool from Chef.
 
 ---
 
+https://megamorf.gitlab.io/cheat-sheets/cheat-sheet-inspec.html
+
 https://www.packer.io/docs/provisioners/inspec
 
 ---

@@ -1,21 +1,17 @@
 
-# for testing only
-provider "aws" {
-  region = "eu-west-1"
-}
 
 # Subnet
 data "aws_subnet" "public" {
-    id = var.subnet_id
+  id = var.subnet_id
 }
 
 data "aws_ami" "demo" {
   most_recent = true
   filter {
     name   = "name"
-    values = ["packer-tdd-infra-example-latest"]
+    values = [var.ami_name]
   }
-  owners           = ["self"]
+  owners = ["self"]
 }
 
 resource "aws_security_group" "allow_http_8000" {
@@ -42,7 +38,7 @@ resource "aws_instance" "demo" {
   security_groups = [aws_security_group.allow_http_8000.name]
 
   tags = {
-    Name = "tdd-infrastructure-app"
+    Name = var.instance_name
   }
 
 }

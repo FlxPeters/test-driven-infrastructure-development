@@ -26,9 +26,9 @@ Answer:
 
 ### Divide and conquer
 
-- Split the project in testable units
-- Test each unit in isolation
-- Integrate units and test them together
+- Split the project in testable modules
+- Test each modules in isolation
+- Integrate modules and test them together
 
 ---
 

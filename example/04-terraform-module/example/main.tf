@@ -22,3 +22,14 @@ module "test" {
   instance_name = var.instance_name
 
 }
+
+
+output "instance_id" {
+    value = module.test.instance_id
+}
+output "instance_public_ip" {
+    value = module.test.instance_public_ip
+}
+output "security_group_id" {
+    value = module.test.security_group_id
+}

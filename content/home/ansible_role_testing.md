@@ -4,8 +4,6 @@ weight = 40
 
 {{% section %}}
 
-{{< slide class="blured light" background-image="https://images.unsplash.com/photo-1583870996823-27533e7cc4e2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"  >}}
-
 ## Part 1.2
 
 Testing Ansible roles
@@ -16,7 +14,7 @@ Testing Ansible roles
 
 {{< figure class="float" height="120px" src="https://molecule.readthedocs.io/en/latest/_static/images/logo_invert.png" >}}
 
-<span class="badge">Test Framework</span>
+<span class="badge tool">Test Framework</span>
 <span class="badge">[Github](https://github.com/ansible-community/molecule)</span>
 <span class="badge">[Docs](https://molecule.readthedocs.io/en/latest/)</span>
 
@@ -42,7 +40,7 @@ Modular framework for testing Ansible roles in many scenarios and distributions
 
 ### Ansible Lint
 
-<span class="badge">Linter</span>
+<span class="badge tool">Linter</span>
 <span class="badge">[Github](https://github.com/ansible/ansible-lint)</span>
 
 Checks playbooks for practices and behaviour that could potentially be improved.
@@ -57,7 +55,7 @@ Checks playbooks for practices and behaviour that could potentially be improved.
 
 ### yamllint
 
-<span class="badge">Linter</span>
+<span class="badge tool">Linter</span>
 <span class="badge">[Github](https://github.com/adrienverge/yamllint)</span>
 <span class="badge">[Example](https://github.com/geerlingguy/ansible-role-docker/blob/master/.yamllint)</span>
 
@@ -69,8 +67,8 @@ A linter for YAML files. <br> Enforce best practices and formats for yaml files.
 
 ### Ansible as verifier
 
-<span class="badge">Unit test</span>
-<span class="badge">Integration test</span>
+<span class="badge tool">Unit test</span>
+<span class="badge tool">Integration test</span>
 <span class="badge">[Github](https://github.com/aelsabbahy/goss)</span>
 
 Use ansible facts and modules and assert as test driver.
@@ -96,7 +94,7 @@ Use ansible facts and modules and assert as test driver.
 
 {{< figure class="float" height="120px" src="https://testinfra.readthedocs.io/en/latest/_static/logo.svg" >}}
 
-<span class="badge">Unit test</span>
+<span class="badge tool">Unit test</span>
 <span class="badge">[Github](https://github.com/philpep/testinfra)</span>
 <span class="badge">[Docs](https://testinfra.readthedocs.io/en/latest/)</span>
 
@@ -118,7 +116,7 @@ Make use of the well known pytest framework. Inspired by Serverspec.
 
 ### Goss
 
-<span class="badge">Unit test</span>
+<span class="badge tool">Unit test</span>
 <span class="badge">[Github](https://github.com/aelsabbahy/goss)</span>
 
 Goss is a simple YAML based tool for validating a server’s configuration. Allows generating tests from current system status. No coding required.
@@ -142,8 +140,8 @@ Can also be used for verifying docker images!
 
 {{< figure class="float" height="120px" src="https://avatars3.githubusercontent.com/u/39202509?s=200&v=4" >}}
 
-<span class="badge">Unit test</span>
-<span class="badge">Integration test</span>
+<span class="badge tool">Unit test</span>
+<span class="badge tool">Integration test</span>
 <span class="badge">[Github](https://github.com/inspec/inspec)</span>
 <span class="badge">[Docs](https://www.inspec.io/)</span>
 

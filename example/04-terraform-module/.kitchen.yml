@@ -11,26 +11,26 @@ provisioner:
 
 verifier:
   name: terraform
+  systems:
+    - name: Verify AWS resources
+      # Map terraform output to inspec attributes
+      attrs_outputs:
+        instance_id: instance_id
+        security_group_id: security_group_id
+      backend: aws
+      controls:
+        - aws_ec2_app
+
+    - name: Verify external behaviour from localhost
+      # Map terraform output to inspec attributes
+      attrs_outputs:
+        instance_public_ip: instance_public_ip
+      backend: local
+      controls:
+        - http_check
+
 platforms:
   - name: aws
-    systems:
-      - name: Verify AWS resources
-        # Map terraform output to inspec attributes
-        attrs_outputs:
-          instance_id: instance_id
-          security_group_id: security_group_id
-        backend: aws
-        controls:
-          - aws_ec2_app
-
-      - name: Verify external behaviour from localhost
-        # Map terraform output to inspec attributes
-        attrs_outputs:
-          instance_public_ip: instance_public_ip
-        backend: local
-        controls:
-          - http_check
 
 suites:
-  - name: aws
-  # root_module_directory: ./example
+  - name: default

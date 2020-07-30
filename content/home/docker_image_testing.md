@@ -4,8 +4,6 @@ weight = 30
 
 {{% section %}}
 
-{{< slide class="blured light" background-image="https://images.unsplash.com/photo-1505460913785-79883ec8cf5a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=967&q=80"  >}}
-
 ## Part 1.1
 
 Build and test a Docker image
@@ -30,7 +28,7 @@ Dockerfile
 
 ### Container Structure Tests
 
-<span class="badge">Static analysis</span> <span class="badge">[Github](https://github.com/GoogleContainerTools/container-structure-test)</span>
+<span class="badge tool">Static analysis</span> <span class="badge">[Github](https://github.com/GoogleContainerTools/container-structure-test)</span>
 
 Validate the structure of a container image
 
@@ -53,7 +51,7 @@ Validate the structure of a container image
 
 {{< figure  class="float" height="120px" src="https://camo.githubusercontent.com/ed1547b1b7f6060ad464d180a0c28975ba876830/68747470733a2f2f6861646f6c696e742e6769746875622e696f2f6861646f6c696e742f696d672f6361745f636f6e7461696e65722e706e67" >}}
 
-<span class="badge">Linter</span> <span class="badge">Static analysis</span> <span class="badge">[Github](https://github.com/hadolint/hadolint)</span>
+<span class="badge tool">Linter</span> <span class="badge">Static analysis</span> <span class="badge">[Github](https://github.com/hadolint/hadolint)</span>
 
 A smarter Dockerfile linter that helps you build best practice Docker images
 
@@ -61,7 +59,7 @@ A smarter Dockerfile linter that helps you build best practice Docker images
 
 ### Curl & Bash
 
-<span class="badge">Unit test</span>
+<span class="badge tool">Unit test</span>
 
     docker run --rm --name tdd-example-test -d -p 8000:8000 tdd-example:latest
 

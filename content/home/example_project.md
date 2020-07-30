@@ -18,8 +18,6 @@ weight = 25
 
 ---
 
-{{< slide class="blured light" background-image="https://images.unsplash.com/photo-1505461397380-71e1c7570998?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1567&q=80"  >}}
-
 ### Divide and conquer
 
 - Split the project in testable unit

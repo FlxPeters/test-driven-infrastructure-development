@@ -1,13 +1,7 @@
 {
-  "variables": {
-    "aws_access_key": "AKIAXWO73PYK5OEV7CO5",
-    "aws_secret_key": "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"
-  },
   "builders": [
     {
       "type": "amazon-ebs",
-      "access_key": "{{user `aws_access_key`}}",
-      "secret_key": "{{user `aws_secret_key`}}",
       "region": "eu-west-1",
       "source_ami_filter": {
         "filters": {
@@ -20,7 +14,8 @@
       },
       "instance_type": "t2.micro",
       "ssh_username": "ubuntu",
-      "ami_name": "packer-tdd-infra-example-latest"
+      "ami_name": "packer-tdd-infra-example-latest",
+      "force_deregister": true
     }
   ],
   "provisioners": [

@@ -25,10 +25,17 @@ func TestTerraformModule(t *testing.T) {
 	// Run again and check idempotency
 	terraform.ApplyAndIdempotent(t, terraformOptions)
 
+	// Validte
+	validate(t, terraformOptions)
+
+}
+
+func validate(t *testing.T, terraformOptions *terraform.Options) {
+
 	// Run `terraform output` to get the IP of the instance
 	publicIP := terraform.Output(t, terraformOptions, "instance_public_ip")
 
 	// Make an HTTP request to the instance and make sure we get back a 200 OK with the body "Hello, World!"
 	url := fmt.Sprintf("http://%s:8000", publicIP)
-	http_helper.HttpGetWithRetry(t, url, nil, 200, "Hello, World!", 30, 5*time.Second)
+	http_helper.HttpGetWithRetry(t, url, nil, 200, "Hello, DevCon!", 30, 5*time.Second)
 }

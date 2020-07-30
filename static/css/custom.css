@@ -34,6 +34,10 @@ ul li {
   font-size: 1.5rem;
 }
 
+.badge.tool {
+  background: #154360;
+}
+
 .badge a {
   color: #fff;
 }

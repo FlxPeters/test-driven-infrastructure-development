@@ -12,7 +12,6 @@ control "aws_ec2_app" do
   describe aws_ec2_instance(input('instance_id')) do
     it { should exist }
     it { should be_running }
-    its('image_id') { should eq 'ami-060a0478482bc3b50' }
     its('security_groups') { should cmp([{:id=>input('security_group_id'), :name => "allow_http_8000"}]) }
   end
 end
